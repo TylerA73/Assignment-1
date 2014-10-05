@@ -10,8 +10,8 @@
 */
 
 
-#include <cstdio>
-#include <cctype>
+#include <stdio.h>
+#include <ctype.h>
 #include <iostream>
 
 using namespace std;
@@ -19,38 +19,65 @@ using namespace std;
 const int NUMWORD  = 10;
 const int WORDSIZE = 132;
 
-char dictionary[NUMWORD][WORDSIZE] = {0};
-int freq[NUMWORD]  = {0};
+char letter;
+char dictionary[NUMWORD][WORDSIZE]      = {0};
+char buffer[WORDSIZE]                   = {0};
+int freq[NUMWORD]  		        = {0};
+int wordLengths[NUMWORD]                = {0};
+int ptr                                 =  0;
+int row                                 =  0;
+int col                                 =  0;
+int length                              =  0;
 
 int compareString(char, char);
-int 
+int insertString();
+int printDictionary();
+
+int insertString(){ //inserts string in buffer into the dictionary
+
+  int i;
+  
+  for (i = 0; i < length; i++){ //loops through the buffer and inserts each letter into the dictionary
+
+    dictionary[ptr][i] = buffer[i];
+    cout << dictionary[ptr][i];
+    buffer[i] = 0;
+
+  }
+
+  freq[ptr]++;
+  cout << endl;
+
+}
+
+int printDictionary(){  //prints out the dictionary and the frequencies of each word
+
+
+
+}
+
 
 int main() {
 
-  char ch;
-  char buffer[WORDSIZE] = 0;
-  int newLine = 0;
-  int row     = 0;
-  int col     = 0;
-  int ptr     = 0;
 
   while( cin.good() ){
 
-     ch = cin.get();      //gets the next character in the text file
+     letter = cin.get();      //gets the next character in the text file
 
-     if ( isalpha(ch) ){  
+     if ( isalpha(letter) ){  
 
-         
-         buffer[col] = ch;
+         buffer[col] = letter;
          col++;
-         newLine = 1;
+         length++;
+         
 
      }
 
-     else if (newLine){
+     else if ( !isalpha(letter) ){
 
-          buffer[col] = 0;
-          newLine = 0;
+          insertString();
+          wordLengths[ptr] = length;
+          col = 0;
 
      }
    }
