@@ -30,13 +30,46 @@ int col                                 =  0;
 int length                              =  0;
 int numwords                            =  0;
 
-int compareString();
+bool compareString();
 int insertString();
 int printDictionary();
 
-int compareString(){ //compares buffer with dictionary to check and see if the word already exists
+bool compareString(){ /*compares buffer with dictionary to check and see if the word already exists*/
 
+  bool check = false;
+  int i;
+  int j;
 
+  while ( i < numwords ){
+
+    for ( i = 0; i < numwords; i++ ){
+
+      if ( dictionary[i][0] == buffer[0] ){
+
+        check = true;
+        for (j = 1; j < wordLengths[i]; j++ ){
+
+          if ( dictionary[i][j] != buffer[j] ){
+
+            check = false;
+            break;
+
+          }else{
+
+            freq[i]++;
+            return check;
+
+          }
+
+        }
+
+      }
+    
+    }
+
+  }
+
+  return check;  
 
 }
 
@@ -47,7 +80,6 @@ int insertString(){ //inserts string in buffer into the dictionary
   for (i = 0; i < length; i++){ //loops through the buffer and inserts each letter into the dictionary
 
     dictionary[ptr][i] = buffer[i];
-    cout << dictionary[ptr][i];
     buffer[i] = 0;
 
   }
@@ -55,7 +87,6 @@ int insertString(){ //inserts string in buffer into the dictionary
   numwords++;
   freq[ptr]++;
   ptr++;
-  cout << endl;
 
 }
 
@@ -72,7 +103,7 @@ int printDictionary(){  //prints out the dictionary and the frequencies of each 
 
     }
     
-    cout << endl;
+    cout << "   " << freq[i] << endl;
 
   }
 
@@ -97,9 +128,16 @@ int main() {
 
      else if ( !isalpha(letter) ){
 
-          insertString();
-          wordLengths[ptr] = length;
-          col = 0;
+         wordLengths[ptr] = length;
+
+         if ( !compareString() || numwords == 0){
+
+           insertString(); 
+
+         }
+
+         col    = 0;
+         length = 0;
 
      }
    }
