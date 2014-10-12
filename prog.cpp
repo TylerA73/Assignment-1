@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <iostream>
+#include <iomanip>
+#include <locale>
 
 using namespace std;
 
@@ -29,6 +31,7 @@ int row                                 =  0;
 int col                                 =  0;
 int length                              =  0;
 int numwords                            =  0;
+int sameRow				=  0;
 
 bool compareString();
 int insertString();
@@ -36,40 +39,36 @@ int printDictionary();
 
 bool compareString(){ /*compares buffer with dictionary to check and see if the word already exists*/
 
-  bool check = false;
+  bool check;
   int i;
   int j;
+  sameRow = 0;
 
-  while ( i < numwords ){
+  for (i = 0; i < numwords; i++){
 
-    for ( i = 0; i < numwords; i++ ){
+    if ((dictionary[i][0] == buffer[0]) && (length == wordLengths[i])){
+       
+      check = true;
+      sameRow = i;
 
-      if ( dictionary[i][0] == buffer[0] ){
+      if (check){
+        for (j = 1; j < length; j++){
 
-        check = true;
-        for (j = 1; j < wordLengths[i]; j++ ){
-
-          if ( dictionary[i][j] != buffer[j] ){
-
+          if(dictionary[i][j] != buffer[j]){
             check = false;
             break;
 
-          }else{
-
-            freq[i]++;
-            return check;
-
-          }
+          } else check = true;
 
         }
 
       }
-    
+       
     }
 
   }
 
-  return check;  
+return check;
 
 }
 
@@ -83,10 +82,11 @@ int insertString(){ //inserts string in buffer into the dictionary
     buffer[i] = 0;
 
   }
-  
-  numwords++;
-  freq[ptr]++;
+  wordLengths[ptr] = length;
+  freq[ptr] = 1;
   ptr++;
+  freq[ptr] = 0;
+  numwords++;
 
 }
 
@@ -95,15 +95,25 @@ int printDictionary(){  //prints out the dictionary and the frequencies of each 
   int i;
   int j;
 
-  for (i = 0; i < numwords; i++){
+  cout << "Word ------------------------------- Frequency" << endl;
+  cout << endl;
 
-    for (j = 0; j < wordLengths[i]; j++){
+  for (i = 0; i < (ptr - 1); i++){
 
-      cout << dictionary[i][j];
+    for (j = 0; j < 45; j++){
+
+      if(isalpha(dictionary[i][j])){
+
+         cout << dictionary[i][j];
+         dictionary[i][j] = 0;
+
+      }
+      else 
+         cout << " ";
 
     }
     
-    cout << "   " << freq[i] << endl;
+    cout << freq[i] << endl;
 
   }
 
@@ -128,12 +138,17 @@ int main() {
 
      else if ( !isalpha(letter) ){
 
-         wordLengths[ptr] = length;
+         //wordLengths[ptr] = length;
 
          if ( !compareString() || numwords == 0){
 
-           insertString(); 
+           insertString();
+           
+           
+         }
 
+         else if (compareString){
+           freq[sameRow]++;
          }
 
          col    = 0;
