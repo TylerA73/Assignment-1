@@ -39,36 +39,38 @@ int printDictionary();
 
 bool compareString(){ /*compares buffer with dictionary to check and see if the word already exists*/
 
-  bool check;
+  bool check = false;
   int i;
   int j;
   sameRow = 0;
 
-  for (i = 0; i < numwords; i++){
+  for (i = 0; i < (ptr - 1) ; i++){
 
     if ((dictionary[i][0] == buffer[0]) && (length == wordLengths[i])){
        
       check = true;
       sameRow = i;
 
-      if (check){
-        for (j = 1; j < length; j++){
+      if (dictionary[i][1] == buffer[1]){
+        for (j = 1; j < wordLengths[i]; j++){
 
           if(dictionary[i][j] != buffer[j]){
             check = false;
             break;
 
-          } else check = true;
-
+          }
+        
         }
-
+        
       }
+
+      if(check) return true;
        
     }
 
   }
 
-return check;
+  return false;
 
 }
 
@@ -82,10 +84,11 @@ int insertString(){ //inserts string in buffer into the dictionary
     buffer[i] = 0;
 
   }
+
   wordLengths[ptr] = length;
+  length = 0;
   freq[ptr] = 1;
   ptr++;
-  freq[ptr] = 0;
   numwords++;
 
 }
@@ -95,6 +98,11 @@ int printDictionary(){  //prints out the dictionary and the frequencies of each 
   int i;
   int j;
 
+  cout << "Maximum capacity of the dictionary is 10 words. "
+       << "It will only add the first 10"
+       << endl << "unique words."
+       << endl << endl;
+  cout << "Dictionary will only add the first 132 characters in a word." << endl << endl;
   cout << "Word ------------------------------- Frequency" << endl;
   cout << endl;
 
@@ -127,7 +135,7 @@ int main() {
 
      letter = cin.get();      //gets the next character in the text file
 
-     if ( isalpha(letter) ){  
+     if ( isalpha(letter) && (length < WORDSIZE) && (numwords < MAXWORD)){  
 
          buffer[col] = letter;
          col++;
@@ -136,19 +144,19 @@ int main() {
 
      }
 
-     else if ( !isalpha(letter) ){
+     else if ( !isalpha(letter) || (length == WORDSIZE) ){
 
-         //wordLengths[ptr] = length;
 
-         if ( !compareString() || numwords == 0){
+         if (!compareString()){
 
            insertString();
            
            
          }
 
-         else if (compareString){
+         else if (compareString()){
            freq[sameRow]++;
+
          }
 
          col    = 0;
