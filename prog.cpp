@@ -44,24 +44,25 @@ bool compareString(){ /*compares buffer with dictionary to check and see if the 
   int j;
   sameRow = 0;
 
-  for (i = 0; i < ptr ; i++){
+  for (i = 0; i < MAXWORD ; i++){
 
     if ((dictionary[i][0] == buffer[0]) && (length == wordLengths[i])){
+    /*check to see if the first characters in the word and buffer match*/
        
       check = true;
       sameRow = i;
 
-      if (dictionary[i][1] == buffer[1]){
-        for (j = 1; j < wordLengths[i]; j++){
+      if (dictionary[i][1] == buffer[1]){ 
+        for (j = 1; j < length; j++){ //check to see if the rest of the characters match
 
-          if(dictionary[i][j] != buffer[j]){
+          if(dictionary[i][j] != buffer[j]){ //if they do not match, move onto the next word
             check = false;
             break;
 
           }
         
         }
-        if(check)
+        if(check)      //if they do match, return true
           return true;
       }
        
@@ -69,7 +70,7 @@ bool compareString(){ /*compares buffer with dictionary to check and see if the 
 
   }
 
-  return false;
+  return false; //if no matching words, return false
 
 }
 
@@ -102,25 +103,28 @@ int printDictionary(){  //prints out the dictionary and the frequencies of each 
        << endl << "unique words."
        << endl << endl;
   cout << "Dictionary will only add the first 132 characters in a word." << endl << endl;
-  cout << "Word ------------------------------- Frequency" << endl;
+  cout << "Dictionary will only print the first 90 characters of any word longer than 90 " 
+       <<  "characters" << endl << endl;
+  cout << "Word ------------------------------------------------------------------------" 
+       << "------ Frequency" << endl;
   cout << endl;
 
   for (i = 0; i < numwords; i++){
 
-    for (j = 0; j < 45; j++){
+    for (j = 0; j < 90; j++){ //prints up to the first 90 chars of a word
 
+      
       if(isalpha(dictionary[i][j])){
 
          cout << dictionary[i][j];
-         //dictionary[i][j] = 0;
 
       }
       else 
-         cout << " ";
+         cout << " ";        //fills with spaces to keep the output looking neat
 
     }
     
-    cout << freq[i] << endl;
+    cout << freq[i] << endl; //prints the frequency of the word
 
   }
 
@@ -128,17 +132,22 @@ int printDictionary(){  //prints out the dictionary and the frequencies of each 
 
 
 int main() {
-
-
+  
+  
   while( cin.good() ){
+     
 
-     letter = cin.get();      //gets the next character in the text file
+     letter = cin.get();       //gets the next character in the text file
+     while (letter == '\n') letter = ' ';
 
-     if ( isalpha(letter) && (length < WORDSIZE) && (numwords < MAXWORD)){  
+     if ( isalpha(letter) && (length <= WORDSIZE)){ /*inserts characters into the buffer,  
+                                                    preparing them to be inserted into the 
+                                                    dictionary.*/
 
          buffer[col] = letter;
          col++;
          length++;
+         
          
 
      }
@@ -146,20 +155,21 @@ int main() {
      else if ( !isalpha(letter) || (length == WORDSIZE) ){
 
 
-         if ((!compareString()) && (ptr < MAXWORD)){
+         if (((!compareString()) && (ptr < MAXWORD)) ){ //if the word does not already exist, add it
 
            insertString();
            
            
          }
 
-         else if (compareString()){
+         else if (compareString()){ //if the word exists, it will increase the frequency of that word
            freq[sameRow]++;
 
          }
 
          col    = 0;
          length = 0;
+         
 
      }
    }

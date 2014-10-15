@@ -2,5 +2,14 @@ Tyler Arseneault
 October 13, 2014
 Assignment 1
 
+Information: This is the dictionary program for assignment 1. This program will read words from a text file and store them into a 2-dimensional array. It will hold up to 10 words, and these words cannot be longer than 132 characters long. It will also keep track of how many times each word occurs in the text file. If there are more than 10 unique words, it will only add the first 10. If a word is longer than 132 characters, it will only add the first 132 characters. The program will print the dictionary, but will only print the first 90 characters as to keep the output looking neat.
 
+Files associated: prog.cpp, testdata.txt, testdata2.txt, testdata3.txt, makefile
+
+
+Step 1: Change Directory to Assignment1 in Terminal.
+Step 2: In terminal, type "make" to compile the program.
+Step 3: In Terminal, type ./prog < testdata.txt to run the first set of test data.
+Step 4: In Terminal, type ./prog < testdata2.txt to run the second set of test data.
+Step 5: In Terminal, type ./prog < testdata3.txt to run the third set of test data.
 
