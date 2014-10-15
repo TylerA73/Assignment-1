@@ -44,7 +44,7 @@ bool compareString(){ /*compares buffer with dictionary to check and see if the 
   int j;
   sameRow = 0;
 
-  for (i = 0; i < (ptr - 1) ; i++){
+  for (i = 0; i < ptr ; i++){
 
     if ((dictionary[i][0] == buffer[0]) && (length == wordLengths[i])){
        
@@ -61,10 +61,9 @@ bool compareString(){ /*compares buffer with dictionary to check and see if the 
           }
         
         }
-        
+        if(check)
+          return true;
       }
-
-      if(check) return true;
        
     }
 
@@ -106,14 +105,14 @@ int printDictionary(){  //prints out the dictionary and the frequencies of each 
   cout << "Word ------------------------------- Frequency" << endl;
   cout << endl;
 
-  for (i = 0; i < (ptr - 1); i++){
+  for (i = 0; i < numwords; i++){
 
     for (j = 0; j < 45; j++){
 
       if(isalpha(dictionary[i][j])){
 
          cout << dictionary[i][j];
-         dictionary[i][j] = 0;
+         //dictionary[i][j] = 0;
 
       }
       else 
@@ -147,7 +146,7 @@ int main() {
      else if ( !isalpha(letter) || (length == WORDSIZE) ){
 
 
-         if (!compareString()){
+         if ((!compareString()) && (ptr < MAXWORD)){
 
            insertString();
            
